@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>择天阁 | ZettianHub - Open Source Destiny Tools</title>
+    <link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0d1f2d;
+            --primary: #1a3a4a;
+            --primary-light: #2d5a6b;
+            --gold: #d4a853;
+            --gold-light: #e8c67a;
+            --gold-dark: #b8923d;
+            --cream: #faf6f0;
+            --cream-dark: #f0ebe3;
+            --white: #ffffff;
+            /* 关系配色 */
+            --love-red: #e74c3c;
+            --love-pink: #ff6b8a;
+            --family-orange: #f39c12;
+            --friend-teal: #1abc9c;
+            --female-purple: #9b59b6;
+            --male-blue: #3498db;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: var(--primary-dark);
+            min-height: 100vh;
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(180deg, 
+                #0d1f2d 0%, 
+                #1a3a4a 30%, 
+                #0d1f2d 100%);
+            padding-bottom: 90px;
+        }
+
+        /* 顶部区域 */
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(212, 168, 83, 0.5);
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 8px;
+            text-shadow: 0 2px 20px rgba(212, 168, 83, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--gold-light);
+            letter-spacing: 4px;
+            opacity: 0.8;
+        }
+
+        /* 分隔线 */
+        .divider {
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 25px auto;
+        }
+
+        /* 今日运势横幅 */
+        .daily-banner {
+            margin: 0 20px 25px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.15), rgba(212, 168, 83, 0.05));
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .daily-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .daily-date {
+            font-size: 13px;
+            color: var(--gold-light);
+        }
+
+        .daily-ganzhi {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--cream);
+        }
+
+        .daily-yiji {
+            font-size: 12px;
+            color: var(--cream);
+            opacity: 0.8;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .daily-yiji .yi { color: #27ae60; }
+        .daily-yiji .ji { color: #e74c3c; }
+
+        /* 三大核心门户 */
+        .main-gates {
+            padding: 0 20px;
+            margin-bottom: 25px;
+        }
+
+        .gates-title {
+            font-size: 14px;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 6px;
+        }
+
+        .gates-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .gate-item {
+            position: relative;
+            aspect-ratio: 0.85;
+            background: linear-gradient(145deg, rgba(26, 58, 74, 0.8), rgba(13, 31, 45, 0.9));
+            border: 2px solid rgba(212, 168, 83, 0.3);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .gate-item:hover,
+        .gate-item:active {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 168, 83, 0.2);
+        }
+
+        .gate-icon {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gate-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--cream);
+            position: relative;
+            z-index: 2;
+        }
+
+        .gate-desc {
+            font-size: 11px;
+            color: var(--gold-light);
+            opacity: 0.7;
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 门的开启动效 */
+        .door-left, .door-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(26, 58, 74, 0.95), rgba(13, 31, 45, 0.98));
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .door-left {
+            left: 0;
+            border-right: 1px solid rgba(212, 168, 83, 0.2);
+            transform-origin: left center;
+        }
+
+        .door-left::after {
+            content: '';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(212, 168, 83, 0.3);
+        }
+
+        .door-right {
+            right: 0;
+            border-left: 1px solid rgba(212, 168, 83, 0.2);
+            transform-origin: right center;
+        }
+
+        .gate-item:hover .door-left,
+        .gate-item:active .door-left {
+            transform: perspective(500px) rotateY(-85deg);
+        }
+
+        .gate-item:hover .door-right,
+        .gate-item:active .door-right {
+            transform: perspective(500px) rotateY(85deg);
+        }
+
+        /* 门内光效 */
+        .gate-item::before {
+            content: '';
+            position: absolute;
+            inset: 10%;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .gate-item:hover::before,
+        .gate-item:active::before {
+            opacity: 1;
+        }
+
+        /* 关系法门区 */
+        .relation-section {
+            padding: 0 20px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 15px;
+            letter-spacing: 6px;
+        }
+
+        .relation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .relation-item {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(26, 58, 74, 0.6), rgba(13, 31, 45, 0.8));
+            border: 1px solid rgba(212, 168, 83, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .relation-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .relation-item:hover,
+        .relation-item:active {
+            transform: translateY(-2px) translateX(3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .relation-item:hover::before {
+            opacity: 1;
+        }
+
+        /* 关系配色边框 */
+        .relation-item.love { border-left: 3px solid var(--love-red); }
+        .relation-item.family { border-left: 3px solid var(--family-orange); }
+        .relation-item.friend { border-left: 3px solid var(--friend-teal); }
+        .relation-item.female { border-left: 3px solid var(--female-purple); }
+        .relation-item.male { border-left: 3px solid var(--male-blue); }
+
+        .relation-icon {
+            width: 42px;
+            height: 42px;
+            margin-right: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .relation-item.love .relation-icon { background: rgba(231, 76, 60, 0.2); }
+        .relation-item.family .relation-icon { background: rgba(243, 156, 18, 0.2); }
+        .relation-item.friend .relation-icon { background: rgba(26, 188, 156, 0.2); }
+        .relation-item.female .relation-icon { background: rgba(155, 89, 182, 0.2); }
+        .relation-item.male .relation-icon { background: rgba(52, 152, 219, 0.2); }
+
+        .relation-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .relation-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 2px;
+        }
+
+        .relation-desc {
+            font-size: 11px;
+            color: var(--gold-light);
+            opacity: 0.7;
+        }
+
+        .relation-arrow {
+            color: var(--gold);
+            opacity: 0.5;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .relation-item:hover .relation-arrow {
+            opacity: 1;
+            transform: translateX(3px);
+        }
+
+        /* 专业服务区 */
+        .service-section {
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(26, 58, 74, 0.6));
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover,
+        .service-item:active {
+            transform: translateY(-2px);
+            border-color: var(--gold);
+            box-shadow: 0 5px 20px rgba(212, 168, 83, 0.15);
+        }
+
+        .service-icon {
+            width: 44px;
+            height: 44px;
+            margin-right: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            flex-shrink: 0;
+        }
+
+        .service-item.vip .service-icon {
+            background: linear-gradient(135deg, #ffd700, #ffb347, #ffd700);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .service-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 2px;
+        }
+
+        .service-desc {
+            font-size: 11px;
+            color: var(--gold-light);
+            opacity: 0.8;
+        }
+
+        /* 底部装饰 */
+        .footer-decor {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--gold);
+            opacity: 0.5;
+            letter-spacing: 2px;
+        }
+
+        .bagua-symbol {
+            font-size: 24px;
+            margin-bottom: 10px;
+            opacity: 0.3;
+            letter-spacing: 15px;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: rgba(13, 31, 45, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 10px 0 28px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid rgba(212, 168, 83, 0.2);
+            z-index: 50;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: var(--cream);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 5px 20px;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-item:hover {
+            opacity: 0.8;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+        }
+
+        .nav-text {
+            font-size: 11px;
+        }
+
+        /* VIP浮动按钮 */
+        .vip-float {
+            position: fixed;
+            right: 15px;
+            bottom: 95px;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #ffd700, #ffb347, #ffd700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-size: 26px;
+        }
+
+        .vip-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .vip-float::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            z-index: -1;
+            opacity: 0.5;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        /* 版本选择弹窗 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(180deg, #1a3a4a 0%, #0d1f2d 100%);
+            border-radius: 24px 24px 0 0;
+            padding: 30px 25px 40px;
+            width: 100%;
+            max-width: 430px;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 2px solid rgba(212, 168, 83, 0.3);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: var(--cream);
+            opacity: 0.7;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: var(--cream);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .version-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .version-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: rgba(26, 58, 74, 0.6);
+            border: 2px solid rgba(212, 168, 83, 0.2);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .version-item:hover,
+        .version-item:active {
+            border-color: var(--gold);
+            background: rgba(212, 168, 83, 0.1);
+        }
+
+        .version-item.recommended {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.15), rgba(212, 168, 83, 0.05));
+            position: relative;
+        }
+
+        .version-item.recommended::before {
+            content: '推荐';
+            position: absolute;
+            top: -8px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--primary-dark);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .version-icon {
+            width: 48px;
+            height: 48px;
+            margin-right: 14px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .version-item.free .version-icon {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.3), rgba(39, 174, 96, 0.1));
+        }
+
+        .version-item.vip .version-icon {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.3), rgba(212, 168, 83, 0.1));
+        }
+
+        .version-item.pro .version-icon {
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.3), rgba(155, 89, 182, 0.1));
+        }
+
+        .version-info {
+            flex: 1;
+        }
+
+        .version-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 3px;
+        }
+
+        .version-desc {
+            font-size: 12px;
+            color: var(--gold-light);
+            opacity: 0.8;
+        }
+
+        .version-arrow {
+            color: var(--gold);
+            opacity: 0.5;
+            font-size: 18px;
+        }
+
+        /* Toast提示 */
+        .toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(26, 58, 74, 0.95);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 300;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 背景粒子效果 */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.15;
+            }
+            50% {
+                transform: translateY(-80px) translateX(15px);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes sizePulse {
+            0%, 100% { width: 2px; height: 2px; }
+            50% { width: 4px; height: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 背景粒子 -->
+        <div class="particles" id="particles"></div>
+
+        <!-- 顶部 -->
+        <div class="header">
+            <div class="logo">☯</div>
+            <h1 class="title">择天阁</h1>
+            <p class="subtitle">探索命理奥秘</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 今日运势 -->
+        <div class="daily-banner">
+            <div class="daily-info">
+                <div class="daily-date" id="dailyDate"></div>
+                <div class="daily-ganzhi" id="dailyGanzhi"></div>
+                <div class="daily-yiji" id="dailyYiji"></div>
+            </div>
+            <div style="font-size: 28px; opacity: 0.8;">🌅</div>
+        </div>
+
+        <!-- 三大核心门户 -->
+        <div class="main-gates">
+            <div class="gates-title">— 命理法门 —</div>
+            <div class="gates-row">
+                <div class="gate-item" onclick="openVersionModal('zhetianmi', '择天密码')">
+                    <div class="door-left"></div>
+                    <div class="door-right"></div>
+                    <div class="gate-icon">🔮</div>
+                    <div class="gate-name">择天密码</div>
+                    <div class="gate-desc">命格解读</div>
+                </div>
+                <div class="gate-item" onclick="openVersionModal('zhetianyi', '择天易数')">
+                    <div class="door-left"></div>
+                    <div class="door-right"></div>
+                    <div class="gate-icon">☰</div>
+                    <div class="gate-name">择天易数</div>
+                    <div class="gate-desc">易占卜卦</div>
+                </div>
+                <div class="gate-item" onclick="openVersionModal('zhetianchanka', '择天禅卡')">
+                    <div class="door-left"></div>
+                    <div class="door-right"></div>
+                    <div class="gate-icon">🧘</div>
+                    <div class="gate-name">择天禅卡</div>
+                    <div class="gate-desc">灵性指引</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关系法门区 -->
+        <div class="relation-section">
+            <div class="section-title">— 关系法门 —</div>
+            <div class="relation-grid">
+                <div class="relation-item love" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">
+                    <div class="relation-icon">💑</div>
+                    <div class="relation-info">
+                        <div class="relation-name">合婚配对</div>
+                        <div class="relation-desc">姻缘天定</div>
+                    </div>
+                    <span class="relation-arrow">→</span>
+                </div>
+                <div class="relation-item family" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">
+                    <div class="relation-icon">👨‍👩‍👧</div>
+                    <div class="relation-info">
+                        <div class="relation-name">家庭版</div>
+                        <div class="relation-desc">全家命盘</div>
+                    </div>
+                    <span class="relation-arrow">→</span>
+                </div>
+                <div class="relation-item friend" onclick="navigateTo('../择天密码/择天密码_朋友免费版.html')">
+                    <div class="relation-icon">🤝</div>
+                    <div class="relation-info">
+                        <div class="relation-name">朋友版</div>
+                        <div class="relation-desc">知己知彼</div>
+                    </div>
+                    <span class="relation-arrow">→</span>
+                </div>
+                <div class="relation-item female" onclick="navigateTo('../择天密码/择天密码_女女配对免费版.html')">
+                    <div class="relation-icon">💜</div>
+                    <div class="relation-info">
+                        <div class="relation-name">女女配对</div>
+                        <div class="relation-desc">同性情缘</div>
+                    </div>
+                    <span class="relation-arrow">→</span>
+                </div>
+                <div class="relation-item male" onclick="navigateTo('../择天密码/择天密码_男男配对免费版.html')">
+                    <div class="relation-icon">💙</div>
+                    <div class="relation-info">
+                        <div class="relation-name">男男配对</div>
+                        <div class="relation-desc">知己良缘</div>
+                    </div>
+                    <span class="relation-arrow">→</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 专业服务区 -->
+        <div class="service-section">
+            <div class="section-title">— 专业服务 —</div>
+            <div class="service-grid">
+                <div class="service-item" onclick="navigateTo('../择天风水/择天风水.html')">
+                    <div class="service-icon">🧭</div>
+                    <div>
+                        <div class="service-name">择天风水</div>
+                        <div class="service-desc">飞星罗盘</div>
+                    </div>
+                </div>
+                <div class="service-item" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">
+                    <div class="service-icon">⭐</div>
+                    <div>
+                        <div class="service-name">开源社区</div>
+                        <div class="service-desc">GitHub</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部装饰 -->
+        <div class="footer-decor">
+            <div class="bagua-symbol">☰ ☱ ☲ ☳ ☴ ☵ ☶ ☷</div>
+            <div class="footer-text">择天阁 · 知命者不怨天 · <a href="https://zetian.i-ching-ai.com" target="_blank" style="color:#d4a853;text-decoration:none;">官网</a> · <a href="https://github.com/zettian" target="_blank" style="color:#d4a853;text-decoration:none;">GitHub 开源社区</a></div>
+        </div>
+
+        <!-- GitHub入口 -->
+        <div class="vip-float" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">⭐</div>
+
+        <!-- 底部导航 -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="switchTab('home')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">首页</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('record')">
+                <span class="nav-icon">📜</span>
+                <span class="nav-text">记录</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('profile')">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">我的</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 版本选择弹窗 -->
+    <div class="modal-overlay" id="versionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">选择版本</h2>
+                <p class="modal-subtitle" id="modalSubtitle">探索命理奥秘</p>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="version-list" id="versionList"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============ 八字计算核心函数 ============
+        const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+        const DIZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+        
+        // 基础参照：1900年1月31日为庚子年（年柱）和壬子月（月柱）的开始
+        const BASE_YEAR = 1900;
+        const BASE_DATE = new Date(1900, 0, 31); // 1900-01-31
+        
+        // 计算年柱天干（以立春为界）
+        function getYearGanZhi(year, month) {
+            // 如果是1月或2月，实际是上一年的年柱
+            let actualYear = year;
+            if (month < 3) actualYear--;
+            
+            let ganIndex = (actualYear - 4) % 10; // 1900年是庚年，庚的索引是6，减4后为0对应庚
+            if (ganIndex < 0) ganIndex += 10;
+            
+            let zhiIndex = (actualYear - 4) % 12;
+            if (zhiIndex < 0) zhiIndex += 12;
+            
+            return TIANGAN[ganIndex] + DIZHI[zhiIndex];
+        }
+        
+        //蔡勒公式计算星期（0=周日）
+        function getWeekday(year, month, day) {
+            const m = month <= 2 ? month + 12 : month;
+            const y = month <= 2 ? year - 1 : year;
+            return (y + Math.floor(y/4) - Math.floor(y/100) + Math.floor(y/400) + Math.floor((13*m+8)/5) + day) % 7;
+        }
+        
+        // 计算日柱（朔望月法，简化版）
+        function getDayGanZhi(year, month, day) {
+            // 计算距离基准日的天数
+            const currentDate = new Date(year, month - 1, day);
+            const daysDiff = Math.floor((currentDate - BASE_DATE) / (24 * 60 * 60 * 1000));
+            
+            // 基准日1900-01-31是壬子日，壬的索引是8
+            let ganIndex = (8 + daysDiff) % 10;
+            if (ganIndex < 0) ganIndex += 10;
+            
+            let zhiIndex = (0 + daysDiff) % 12;
+            if (zhiIndex < 0) zhiIndex += 12;
+            
+            return TIANGAN[ganIndex] + DIZHI[zhiIndex];
+        }
+        
+        // 计算月柱（简化版，以节为界）
+        function getMonthGanZhi(year, month, day) {
+            // 节气大致日期（每月两个节气，交节日在这些日期前后）
+            const jieqi = [
+                [4, 20], [5, 5], [6, 21], [7, 23], [8, 23], [9, 23],
+                [10, 23], [11, 22], [12, 22], [1, 20], [2, 19], [3, 21],
+                [4, 20], [5, 5]
+            ];
+            
+            const actualMonth = month;
+            let zhiIndex = (actualMonth + 1) % 12; // 月支
+            
+            // 计算月干
+            let yearGan = TIANGAN[(year - 4) % 10 < 0 ? (year - 4) % 10 + 10 : (year - 4) % 10];
+            let ganIndex = (TIANGAN.indexOf(yearGan) * 2 + actualMonth) % 10;
+            
+            return TIANGAN[ganIndex] + DIZHI[zhiIndex];
+        }
+        
+        // 获取星期几
+        function getWeekdayName(year, month, day) {
+            const names = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            return names[getWeekday(year, month, day)];
+        }
+        
+        // 格式化日期
+        function formatDate(year, month, day) {
+            return `${year}年${month}月${day}日`;
+        }
+        
+        // 宜忌生成（基于日柱天干）
+        function generateYiji(dayGanZhi) {
+            const yi = ['祈福', '嫁娶', '订盟', '纳采', '出行', '移徙', '入宅', '安床', '会亲友', '开业', '置产', '动土', '起基', '定磬', '开市', '交易', '立券', '挂匾'];
+            const ji = ['动土', '破土', '安葬', '开市', '出货财', '嫁娶', '词讼', '移徙', '开池', '开厕', '破屋', '坏垣', '栽种', '伐木', '纳畜', '牧养'];
+            
+            // 基于日柱天干选择不同组合
+            const ganIndex = TIANGAN.indexOf(dayGanZhi[0]);
+            const yiCount = 2 + (ganIndex % 3);
+            const jiCount = 2 + ((ganIndex + 1) % 3);
+            
+            // 伪随机选择（基于日期）
+            const seed = dayGanZhi.charCodeAt(0) + dayGanZhi.charCodeAt(1);
+            const selectedYi = [];
+            const selectedJi = [];
+            
+            for (let i = 0; i < yiCount; i++) {
+                const idx = (seed + i * 7) % yi.length;
+                if (!selectedYi.includes(yi[idx])) selectedYi.push(yi[idx]);
+            }
+            
+            for (let i = 0; i < jiCount; i++) {
+                const idx = (seed + i * 11) % ji.length;
+                if (!selectedJi.includes(ji[idx])) selectedJi.push(ji[idx]);
+            }
+            
+            return {
+                yi: selectedYi.slice(0, 3).join(' '),
+                ji: selectedJi.slice(0, 3).join(' ')
+            };
+        }
+        
+        // ============ 初始化今日运势 ============
+        function initDailyFortune() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            const yearGZ = getYearGanZhi(year, month);
+            const monthGZ = getMonthGanZhi(year, month, day);
+            const dayGZ = getDayGanZhi(year, month, day);
+            
+            const ganzhi = `${yearGZ}年 ${monthGZ}月 ${dayGZ}日`;
+            const yiji = generateYiji(dayGZ);
+            
+            document.getElementById('dailyDate').textContent = `${formatDate(year, month, day)} ${getWeekdayName(year, month, day)}`;
+            document.getElementById('dailyGanzhi').textContent = ganzhi;
+            document.getElementById('dailyYiji').innerHTML = `<span class="yi">宜：${yiji.yi}</span><span class="ji">忌：${yiji.ji}</span>`;
+        }
+        
+        // ============ 版本选择弹窗 ============
+        const versionConfig = {
+            zhetianmi: {
+                title: '择天密码',
+                subtitle: '命格密码 · 解读人生',
+                versions: [
+                    { name: '免费版', desc: '基础命格解读', icon: '🔓', path: 'https://zettian.github.io/bazi/', type: 'free' },
+                    { name: '完整版', desc: '深度分析解读', icon: '🚀', path: 'https://zettian.github.io/bazi/', type: 'free' },
+                    { name: '专业版', desc: '大师级全方位解读', icon: '💎', path: '../择天密码/择天密码_专业版.html', type: 'pro' }
+                ]
+            },
+            zhetianyi: {
+                title: '择天易数',
+                subtitle: '易经智慧 · 占卜未来',
+                versions: [
+                    { name: '免费版', desc: '基础卦象解读', icon: '🔓', path: '../择天易数/择天易.html', type: 'free' },
+                    { name: '完整版', desc: '详解卦辞爻辞', icon: '🚀', path: 'https://zettian.github.io/yi/', type: 'free' }
+                ]
+            },
+            zhetianchanka: {
+                title: '择天禅卡',
+                subtitle: '灵性指引 · 心境启示',
+                versions: [
+                    { name: '免费版', desc: '单张指引卡', icon: '🔓', path: 'https://zettian.github.io/zen/', type: 'free' },
+                    { name: '完整版', desc: '三卡阵解读', icon: '🚀', path: 'https://zettian.github.io/zen/', type: 'free' },
+                    { name: '完整版', desc: '七卡阵深度解读', icon: '🚀', path: 'https://zettian.github.io/zen/', type: 'free' }
+                ]
+            }
+        };
+        
+        function openVersionModal(key, name) {
+            const config = versionConfig[key];
+            if (!config) return;
+            
+            document.getElementById('modalTitle').textContent = config.title;
+            document.getElementById('modalSubtitle').textContent = config.subtitle;
+            
+            const list = document.getElementById('versionList');
+            list.innerHTML = config.versions.map((v, i) => `
+                <div class="version-item ${v.type} ${i === 0 ? 'recommended' : ''}" onclick="navigateTo('${v.path}')">
+                    <div class="version-icon">${v.icon}</div>
+                    <div class="version-info">
+                        <div class="version-name">${v.name}</div>
+                        <div class="version-desc">${v.desc}</div>
+                    </div>
+                    <span class="version-arrow">→</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('versionModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('versionModal').classList.remove('active');
+        }
+        
+        // 点击遮罩关闭
+        document.getElementById('versionModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        
+        // ============ 导航与提示 ============
+        function navigateTo(path) {
+            // 关闭弹窗
+            closeModal();
+            // 跳转前显示过渡效果
+            document.body.style.opacity = '0.5';
+            setTimeout(() => {
+                window.location.href = path;
+            }, 100);
+        }
+        
+        function switchTab(tab) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            if (tab === 'home') {
+                navItems[0].classList.add('active');
+            } else if (tab === 'record' || tab === 'profile') {
+                navItems[tab === 'record' ? 1 : 2].classList.add('active');
+                showToast('此功能即将上线');
+            }
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+        
+        // ============ 背景粒子 ============
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = 1 + Math.random() * 3;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+                
+                // 添加大小变化动画
+                particle.style.animation = `float ${6 + Math.random() * 6}s infinite ease-in-out, sizePulse ${3 + Math.random() * 2}s infinite ease-in-out`;
+                particle.style.animationDelay = `${Math.random() * 8}s, ${Math.random() * 3}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // ============ 初始化 ============
+        document.addEventListener('DOMContentLoaded', function() {
+            initDailyFortune();
+            createParticles();
+        });
+    </script>
+    <!-- 开源信息 | Open Source Info -->
+    <div style="text-align:center;padding:20px 15px;margin-top:10px;border-top:1px solid rgba(212,168,83,0.2);">
+        <div style="font-size:14px;color:#d4a853;font-weight:bold;margin-bottom:8px;letter-spacing:1px;">⚡ 开源产品矩阵 | Open Source Suite</div>
+        <div style="font-size:12px;color:#999;line-height:1.8;margin-bottom:8px;">
+            所有产品以 BSL 1.1 许可证开源发布，非商业用途免费使用<br>
+            All products released under BSL 1.1 License, free for non-commercial use
+        </div>
+        <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+            <a href="https://zetian.i-ching-ai.com" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#d4a853,#e8c67a);color:#0d1f2d;border:none;padding:8px 20px;border-radius:16px;font-size:13px;font-weight:bold;text-decoration:none;">✨ 完整版 → 官网</a>
+        </div>
+        <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+            <a href="https://github.com/zettian/bazi" target="_blank" style="display:inline-block;border:1px solid rgba(212,168,83,0.5);color:#d4a853;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 八字排盘</a>
+            <a href="https://github.com/zettian/yi" target="_blank" style="display:inline-block;border:1px solid rgba(106,27,162,0.5);color:#6a1b9a;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 易数占卜</a>
+            <a href="https://github.com/zettian/zen" target="_blank" style="display:inline-block;border:1px solid rgba(201,168,108,0.5);color:#c9a86c;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 禅卡占卜</a>
+            <a href="https://github.com/zettian/fengshui" target="_blank" style="display:inline-block;border:1px solid rgba(0,128,128,0.5);color:#008080;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 风水罗盘</a>
+        </div>
+        <div style="font-size:12px;color:#b8923d;margin-bottom:4px;">📱 微信小程序搜「易学轻松玩」</div>
+        <div style="font-size:11px;color:#666;margin-top:4px;">⭐ Star us on GitHub | 开源引擎由择天老师开发 | Engine by Master Zeyue</div>
+    </div>
+
+</body>
+</html>
