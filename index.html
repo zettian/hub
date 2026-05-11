@@ -23,6 +23,8 @@
             --friend-teal: #1abc9c;
             --female-purple: #9b59b6;
             --male-blue: #3498db;
+            /* i18n */
+            --badge-recommended: '推荐';
         }
 
         * {
@@ -663,7 +665,7 @@
         }
 
         .version-item.recommended::before {
-            content: '推荐';
+            content: var(--badge-recommended);
             position: absolute;
             top: -8px;
             right: 15px;
@@ -720,6 +722,37 @@
             color: var(--gold);
             opacity: 0.5;
             font-size: 18px;
+        }
+
+        /* 语言切换按钮 */
+        .lang-switch {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            background: rgba(212, 168, 83, 0.15);
+            border-radius: 20px;
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--gold-light);
+            font-size: 12px;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--primary-dark);
+            font-weight: 600;
         }
 
         /* Toast提示 */
@@ -788,9 +821,13 @@
 
         <!-- 顶部 -->
         <div class="header">
+            <div class="lang-switch">
+                <button class="lang-btn active" id="langZh" onclick="setLanguage('zh')">中文</button>
+                <button class="lang-btn" id="langEn" onclick="setLanguage('en')">EN</button>
+            </div>
             <div class="logo">☯</div>
-            <h1 class="title">择天阁</h1>
-            <p class="subtitle">探索命理奥秘</p>
+            <h1 class="title" data-i18n="title">择天阁</h1>
+            <p class="subtitle" data-i18n="subtitle">探索命理奥秘</p>
         </div>
 
         <div class="divider"></div>
@@ -807,73 +844,73 @@
 
         <!-- 三大核心门户 -->
         <div class="main-gates">
-            <div class="gates-title">— 命理法门 —</div>
+            <div class="gates-title" data-i18n="gatesTitle">— 命理法门 —</div>
             <div class="gates-row">
-                <div class="gate-item" onclick="openVersionModal('zhetianmi', '择天密码')">
+                <div class="gate-item" onclick="openVersionModal('zhetianmi')">
                     <div class="door-left"></div>
                     <div class="door-right"></div>
                     <div class="gate-icon">🔮</div>
-                    <div class="gate-name">择天密码</div>
-                    <div class="gate-desc">命格解读</div>
+                    <div class="gate-name" data-i18n="gateZhetianmi">择天密码</div>
+                    <div class="gate-desc" data-i18n="gateZhetianmiDesc">命格解读</div>
                 </div>
-                <div class="gate-item" onclick="openVersionModal('zhetianyi', '择天易数')">
+                <div class="gate-item" onclick="openVersionModal('zhetianyi')">
                     <div class="door-left"></div>
                     <div class="door-right"></div>
                     <div class="gate-icon">☰</div>
-                    <div class="gate-name">择天易数</div>
-                    <div class="gate-desc">易占卜卦</div>
+                    <div class="gate-name" data-i18n="gateZhetianyi">择天易数</div>
+                    <div class="gate-desc" data-i18n="gateZhetianyiDesc">易占卜卦</div>
                 </div>
-                <div class="gate-item" onclick="openVersionModal('zhetianchanka', '择天禅卡')">
+                <div class="gate-item" onclick="openVersionModal('zhetianchanka')">
                     <div class="door-left"></div>
                     <div class="door-right"></div>
                     <div class="gate-icon">🧘</div>
-                    <div class="gate-name">择天禅卡</div>
-                    <div class="gate-desc">灵性指引</div>
+                    <div class="gate-name" data-i18n="gateZhetianchanka">择天禅卡</div>
+                    <div class="gate-desc" data-i18n="gateZhetianchankaDesc">灵性指引</div>
                 </div>
             </div>
         </div>
 
         <!-- 关系法门区 -->
         <div class="relation-section">
-            <div class="section-title">— 关系法门 —</div>
+            <div class="section-title" data-i18n="relationTitle">— 关系法门 —</div>
             <div class="relation-grid">
                 <div class="relation-item love" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">
                     <div class="relation-icon">💑</div>
                     <div class="relation-info">
-                        <div class="relation-name">合婚配对</div>
-                        <div class="relation-desc">姻缘天定</div>
+                        <div class="relation-name" data-i18n="relLove">合婚配对</div>
+                        <div class="relation-desc" data-i18n="relLoveDesc">姻缘天定</div>
                     </div>
                     <span class="relation-arrow">→</span>
                 </div>
                 <div class="relation-item family" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">
                     <div class="relation-icon">👨‍👩‍👧</div>
                     <div class="relation-info">
-                        <div class="relation-name">家庭版</div>
-                        <div class="relation-desc">全家命盘</div>
+                        <div class="relation-name" data-i18n="relFamily">家庭版</div>
+                        <div class="relation-desc" data-i18n="relFamilyDesc">全家命盘</div>
                     </div>
                     <span class="relation-arrow">→</span>
                 </div>
                 <div class="relation-item friend" onclick="navigateTo('../择天密码/择天密码_朋友免费版.html')">
                     <div class="relation-icon">🤝</div>
                     <div class="relation-info">
-                        <div class="relation-name">朋友版</div>
-                        <div class="relation-desc">知己知彼</div>
+                        <div class="relation-name" data-i18n="relFriend">朋友版</div>
+                        <div class="relation-desc" data-i18n="relFriendDesc">知己知彼</div>
                     </div>
                     <span class="relation-arrow">→</span>
                 </div>
                 <div class="relation-item female" onclick="navigateTo('../择天密码/择天密码_女女配对免费版.html')">
                     <div class="relation-icon">💜</div>
                     <div class="relation-info">
-                        <div class="relation-name">女女配对</div>
-                        <div class="relation-desc">同性情缘</div>
+                        <div class="relation-name" data-i18n="relFemale">女女配对</div>
+                        <div class="relation-desc" data-i18n="relFemaleDesc">同性情缘</div>
                     </div>
                     <span class="relation-arrow">→</span>
                 </div>
                 <div class="relation-item male" onclick="navigateTo('../择天密码/择天密码_男男配对免费版.html')">
                     <div class="relation-icon">💙</div>
                     <div class="relation-info">
-                        <div class="relation-name">男男配对</div>
-                        <div class="relation-desc">知己良缘</div>
+                        <div class="relation-name" data-i18n="relMale">男男配对</div>
+                        <div class="relation-desc" data-i18n="relMaleDesc">知己良缘</div>
                     </div>
                     <span class="relation-arrow">→</span>
                 </div>
@@ -882,19 +919,19 @@
 
         <!-- 专业服务区 -->
         <div class="service-section">
-            <div class="section-title">— 专业服务 —</div>
+            <div class="section-title" data-i18n="serviceTitle">— 专业服务 —</div>
             <div class="service-grid">
                 <div class="service-item" onclick="navigateTo('../择天风水/择天风水.html')">
                     <div class="service-icon">🧭</div>
                     <div>
-                        <div class="service-name">择天风水</div>
-                        <div class="service-desc">飞星罗盘</div>
+                        <div class="service-name" data-i18n="svcFengshui">择天风水</div>
+                        <div class="service-desc" data-i18n="svcFengshuiDesc">飞星罗盘</div>
                     </div>
                 </div>
                 <div class="service-item" onclick="window.open('https://zetian.i-ching-ai.com','_blank')">
                     <div class="service-icon">⭐</div>
                     <div>
-                        <div class="service-name">开源社区</div>
+                        <div class="service-name" data-i18n="svcCommunity">开源社区</div>
                         <div class="service-desc">GitHub</div>
                     </div>
                 </div>
@@ -904,7 +941,7 @@
         <!-- 底部装饰 -->
         <div class="footer-decor">
             <div class="bagua-symbol">☰ ☱ ☲ ☳ ☴ ☵ ☶ ☷</div>
-            <div class="footer-text">择天阁 · 知命者不怨天 · <a href="https://zetian.i-ching-ai.com" target="_blank" style="color:#d4a853;text-decoration:none;">官网</a> · <a href="https://github.com/zettian" target="_blank" style="color:#d4a853;text-decoration:none;">GitHub 开源社区</a></div>
+            <div class="footer-text"><span data-i18n="footerBrand">择天阁 · 知命者不怨天</span> · <a href="https://zetian.i-ching-ai.com" target="_blank" style="color:#d4a853;text-decoration:none;" data-i18n="footerWebsite">官网</a> · <a href="https://github.com/zettian" target="_blank" style="color:#d4a853;text-decoration:none;" data-i18n="footerGithub">GitHub 开源社区</a></div>
         </div>
 
         <!-- GitHub入口 -->
@@ -914,15 +951,15 @@
         <div class="bottom-nav">
             <button class="nav-item active" onclick="switchTab('home')">
                 <span class="nav-icon">🏠</span>
-                <span class="nav-text">首页</span>
+                <span class="nav-text" data-i18n="navHome">首页</span>
             </button>
             <button class="nav-item" onclick="switchTab('record')">
                 <span class="nav-icon">📜</span>
-                <span class="nav-text">记录</span>
+                <span class="nav-text" data-i18n="navRecord">记录</span>
             </button>
             <button class="nav-item" onclick="switchTab('profile')">
                 <span class="nav-icon">👤</span>
-                <span class="nav-text">我的</span>
+                <span class="nav-text" data-i18n="navProfile">我的</span>
             </button>
         </div>
     </div>
@@ -931,8 +968,8 @@
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">选择版本</h2>
-                <p class="modal-subtitle" id="modalSubtitle">探索命理奥秘</p>
+                <h2 class="modal-title" id="modalTitle" data-i18n="modalTitle">选择版本</h2>
+                <p class="modal-subtitle" id="modalSubtitle" data-i18n="modalSubtitle">探索命理奥秘</p>
             </div>
             <button class="modal-close" onclick="closeModal()">✕</button>
             <div class="version-list" id="versionList"></div>
@@ -943,6 +980,202 @@
     <div class="toast" id="toast"></div>
 
     <script>
+        // ============ i18n 国际化 ============
+        const i18n = {
+            zh: {
+                // 标题
+                'title': '择天阁',
+                'subtitle': '探索命理奥秘',
+                // 命理法门
+                'gatesTitle': '— 命理法门 —',
+                'gateZhetianmi': '择天密码',
+                'gateZhetianmiDesc': '命格解读',
+                'gateZhetianyi': '择天易数',
+                'gateZhetianyiDesc': '易占卜卦',
+                'gateZhetianchanka': '择天禅卡',
+                'gateZhetianchankaDesc': '灵性指引',
+                // 关系法门
+                'relationTitle': '— 关系法门 —',
+                'relLove': '合婚配对',
+                'relLoveDesc': '姻缘天定',
+                'relFamily': '家庭版',
+                'relFamilyDesc': '全家命盘',
+                'relFriend': '朋友版',
+                'relFriendDesc': '知己知彼',
+                'relFemale': '女女配对',
+                'relFemaleDesc': '同性情缘',
+                'relMale': '男男配对',
+                'relMaleDesc': '知己良缘',
+                // 专业服务
+                'serviceTitle': '— 专业服务 —',
+                'svcFengshui': '择天风水',
+                'svcFengshuiDesc': '飞星罗盘',
+                'svcCommunity': '开源社区',
+                // 底部
+                'footerBrand': '择天阁 · 知命者不怨天',
+                'footerWebsite': '官网',
+                'footerGithub': 'GitHub 开源社区',
+                // 导航
+                'navHome': '首页',
+                'navRecord': '记录',
+                'navProfile': '我的',
+                // 弹窗
+                'modalTitle': '选择版本',
+                'modalSubtitle': '探索命理奥秘',
+                // 版本配置
+                'vc_zhetianmi_title': '择天密码',
+                'vc_zhetianmi_subtitle': '命格密码 · 解读人生',
+                'vc_free': '免费版',
+                'vc_zhetianmi_free_desc': '基础命格解读',
+                'vc_full': '完整版',
+                'vc_zhetianmi_full_desc': '深度分析解读',
+                'vc_pro': '专业版',
+                'vc_zhetianmi_pro_desc': '大师级全方位解读',
+                'vc_zhetianyi_title': '择天易数',
+                'vc_zhetianyi_subtitle': '易经智慧 · 占卜未来',
+                'vc_zhetianyi_free_desc': '基础卦象解读',
+                'vc_zhetianyi_full_desc': '详解卦辞爻辞',
+                'vc_zhetianchanka_title': '择天禅卡',
+                'vc_zhetianchanka_subtitle': '灵性指引 · 心境启示',
+                'vc_zhetianchanka_free_desc': '单张指引卡',
+                'vc_zhetianchanka_full_desc': '三卡阵解读',
+                'vc_zhetianchanka_full2_desc': '七卡阵深度解读',
+                // 今日运势
+                'yiLabel': '宜',
+                'jiLabel': '忌',
+                // 提示
+                'comingSoon': '此功能即将上线',
+                // 开源信息
+                'osMatrixTitle': '⚡ 开源产品矩阵 | Open Source Suite',
+                'osLicenseNote': '所有产品以 BSL 1.1 许可证开源发布，非商业用途免费使用<br>All products released under BSL 1.1 License, free for non-commercial use',
+                'osFullVersion': '✨ 完整版 → 官网',
+                'osBazi': '⭐ 八字排盘',
+                'osYi': '⭐ 易数占卜',
+                'osZen': '⭐ 禅卡占卜',
+                'osFengshui': '⭐ 风水罗盘',
+                'osWechat': '📱 微信小程序搜「易学轻松玩」',
+                'osFooter': '⭐ Star us on GitHub | 开源引擎由择天老师开发 | Engine by Master Zeyue',
+                // 星期
+                'weekday_0': '星期日', 'weekday_1': '星期一', 'weekday_2': '星期二',
+                'weekday_3': '星期三', 'weekday_4': '星期四', 'weekday_5': '星期五', 'weekday_6': '星期六',
+                // 日期格式
+                'dateFormat': '{0}年{1}月{2}日',
+            },
+            en: {
+                // Title
+                'title': 'ZeyueMi Hub',
+                'subtitle': 'Explore Chinese Metaphysics',
+                // Destiny Gates
+                'gatesTitle': '— Destiny Gates —',
+                'gateZhetianmi': 'ZeyueMi',
+                'gateZhetianmiDesc': 'Destiny Code',
+                'gateZhetianyi': 'ZeyueYi',
+                'gateZhetianyiDesc': 'I Ching Oracle',
+                'gateZhetianchanka': 'ZeyueZen',
+                'gateZhetianchankaDesc': 'Spiritual Guide',
+                // Relations
+                'relationTitle': '— Relations —',
+                'relLove': 'Love Match',
+                'relLoveDesc': 'Destined Love',
+                'relFamily': 'Family',
+                'relFamilyDesc': 'Family Charts',
+                'relFriend': 'Friends',
+                'relFriendDesc': 'Know & Be Known',
+                'relFemale': 'Female Match',
+                'relFemaleDesc': 'Same-Sex Love',
+                'relMale': 'Male Match',
+                'relMaleDesc': 'Kindred Bond',
+                // Services
+                'serviceTitle': '— Services —',
+                'svcFengshui': 'Zeyue Fengshui',
+                'svcFengshuiDesc': 'Flying Star Compass',
+                'svcCommunity': 'Open Source',
+                // Footer
+                'footerBrand': 'ZeyueMi Hub · Know Destiny, Fear Not Heaven',
+                'footerWebsite': 'Website',
+                'footerGithub': 'GitHub Community',
+                // Nav
+                'navHome': 'Home',
+                'navRecord': 'Records',
+                'navProfile': 'Me',
+                // Modal
+                'modalTitle': 'Select Version',
+                'modalSubtitle': 'Explore Chinese Metaphysics',
+                // Version config
+                'vc_zhetianmi_title': 'ZeyueMi',
+                'vc_zhetianmi_subtitle': 'Destiny Code · Decode Your Life',
+                'vc_free': 'Free',
+                'vc_zhetianmi_free_desc': 'Basic destiny reading',
+                'vc_full': 'Full',
+                'vc_zhetianmi_full_desc': 'In-depth analysis',
+                'vc_pro': 'Pro',
+                'vc_zhetianmi_pro_desc': 'Master-level full reading',
+                'vc_zhetianyi_title': 'ZeyueYi',
+                'vc_zhetianyi_subtitle': 'I Ching Wisdom · Divine the Future',
+                'vc_zhetianyi_free_desc': 'Basic hexagram reading',
+                'vc_zhetianyi_full_desc': 'Full text & line readings',
+                'vc_zhetianchanka_title': 'ZeyueZen',
+                'vc_zhetianchanka_subtitle': 'Spiritual Guide · Inner Awakening',
+                'vc_zhetianchanka_free_desc': 'Single guidance card',
+                'vc_zhetianchanka_full_desc': 'Three-card spread',
+                'vc_zhetianchanka_full2_desc': 'Seven-card deep reading',
+                // Daily fortune
+                'yiLabel': 'Auspicious',
+                'jiLabel': 'Inauspicious',
+                // Toast
+                'comingSoon': 'Coming soon',
+                // Open source info
+                'osMatrixTitle': '⚡ Open Source Suite',
+                'osLicenseNote': 'All products released under BSL 1.1 License, free for non-commercial use',
+                'osFullVersion': '✨ Full Version → Website',
+                'osBazi': '⭐ Bazi Chart',
+                'osYi': '⭐ I Ching Oracle',
+                'osZen': '⭐ Zen Cards',
+                'osFengshui': '⭐ Fengshui Compass',
+                'osWechat': '📱 Search 「易学轻松玩」 on WeChat',
+                'osFooter': '⭐ Star us on GitHub | Engine by Master Zeyue',
+                // Weekday
+                'weekday_0': 'Sunday', 'weekday_1': 'Monday', 'weekday_2': 'Tuesday',
+                'weekday_3': 'Wednesday', 'weekday_4': 'Thursday', 'weekday_5': 'Friday', 'weekday_6': 'Saturday',
+                // Date format
+                'dateFormat': '{1}/{2}/{0}',
+            }
+        };
+
+        let currentLang = localStorage.getItem('zettian-lang') || 'zh';
+
+        function t(key) {
+            return (i18n[currentLang] && i18n[currentLang][key]) || key;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('zettian-lang', lang);
+            applyLanguage();
+        }
+
+        function applyLanguage() {
+            document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+            document.title = currentLang === 'zh' ? '择天阁 | ZettianHub - Open Source Destiny Tools' : 'ZeyueMi Hub | Open Source Chinese Metaphysics Tools';
+
+            // Update lang switch buttons
+            document.getElementById('langZh').classList.toggle('active', currentLang === 'zh');
+            document.getElementById('langEn').classList.toggle('active', currentLang === 'en');
+
+            // Update CSS variable for "推荐" badge
+            document.documentElement.style.setProperty('--badge-recommended', currentLang === 'zh' ? "'推荐'" : "'New'");
+
+            // Update all data-i18n elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[currentLang] && i18n[currentLang][key]) {
+                    el.innerHTML = i18n[currentLang][key];
+                }
+            });
+
+            // Re-render daily fortune with new language
+            initDailyFortune();
+        }
         // ============ 八字计算核心函数 ============
         const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
         const DIZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -1010,13 +1243,13 @@
         
         // 获取星期几
         function getWeekdayName(year, month, day) {
-            const names = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-            return names[getWeekday(year, month, day)];
+            return t('weekday_' + getWeekday(year, month, day));
         }
         
         // 格式化日期
         function formatDate(year, month, day) {
-            return `${year}年${month}月${day}日`;
+            const fmt = t('dateFormat');
+            return fmt.replace('{0}', year).replace('{1}', month).replace('{2}', day);
         }
         
         // 宜忌生成（基于日柱天干）
@@ -1066,53 +1299,53 @@
             
             document.getElementById('dailyDate').textContent = `${formatDate(year, month, day)} ${getWeekdayName(year, month, day)}`;
             document.getElementById('dailyGanzhi').textContent = ganzhi;
-            document.getElementById('dailyYiji').innerHTML = `<span class="yi">宜：${yiji.yi}</span><span class="ji">忌：${yiji.ji}</span>`;
+            document.getElementById('dailyYiji').innerHTML = `<span class="yi">${t('yiLabel')}：${yiji.yi}</span><span class="ji">${t('jiLabel')}：${yiji.ji}</span>`;
         }
         
         // ============ 版本选择弹窗 ============
         const versionConfig = {
             zhetianmi: {
-                title: '择天密码',
-                subtitle: '命格密码 · 解读人生',
+                titleKey: 'vc_zhetianmi_title',
+                subtitleKey: 'vc_zhetianmi_subtitle',
                 versions: [
-                    { name: '免费版', desc: '基础命格解读', icon: '🔓', path: 'https://zettian.github.io/bazi/', type: 'free' },
-                    { name: '完整版', desc: '深度分析解读', icon: '🚀', path: 'https://zettian.github.io/bazi/', type: 'free' },
-                    { name: '专业版', desc: '大师级全方位解读', icon: '💎', path: '../择天密码/择天密码_专业版.html', type: 'pro' }
+                    { nameKey: 'vc_free', descKey: 'vc_zhetianmi_free_desc', icon: '🔓', path: 'https://zettian.github.io/bazi/', type: 'free' },
+                    { nameKey: 'vc_full', descKey: 'vc_zhetianmi_full_desc', icon: '🚀', path: 'https://zettian.github.io/bazi/', type: 'free' },
+                    { nameKey: 'vc_pro', descKey: 'vc_zhetianmi_pro_desc', icon: '💎', path: '../择天密码/择天密码_专业版.html', type: 'pro' }
                 ]
             },
             zhetianyi: {
-                title: '择天易数',
-                subtitle: '易经智慧 · 占卜未来',
+                titleKey: 'vc_zhetianyi_title',
+                subtitleKey: 'vc_zhetianyi_subtitle',
                 versions: [
-                    { name: '免费版', desc: '基础卦象解读', icon: '🔓', path: '../择天易数/择天易.html', type: 'free' },
-                    { name: '完整版', desc: '详解卦辞爻辞', icon: '🚀', path: 'https://zettian.github.io/yi/', type: 'free' }
+                    { nameKey: 'vc_free', descKey: 'vc_zhetianyi_free_desc', icon: '🔓', path: '../择天易数/择天易.html', type: 'free' },
+                    { nameKey: 'vc_full', descKey: 'vc_zhetianyi_full_desc', icon: '🚀', path: 'https://zettian.github.io/yi/', type: 'free' }
                 ]
             },
             zhetianchanka: {
-                title: '择天禅卡',
-                subtitle: '灵性指引 · 心境启示',
+                titleKey: 'vc_zhetianchanka_title',
+                subtitleKey: 'vc_zhetianchanka_subtitle',
                 versions: [
-                    { name: '免费版', desc: '单张指引卡', icon: '🔓', path: 'https://zettian.github.io/zen/', type: 'free' },
-                    { name: '完整版', desc: '三卡阵解读', icon: '🚀', path: 'https://zettian.github.io/zen/', type: 'free' },
-                    { name: '完整版', desc: '七卡阵深度解读', icon: '🚀', path: 'https://zettian.github.io/zen/', type: 'free' }
+                    { nameKey: 'vc_free', descKey: 'vc_zhetianchanka_free_desc', icon: '🔓', path: 'https://zettian.github.io/zen/', type: 'free' },
+                    { nameKey: 'vc_full', descKey: 'vc_zhetianchanka_full_desc', icon: '🚀', path: 'https://zettian.github.io/zen/', type: 'free' },
+                    { nameKey: 'vc_full', descKey: 'vc_zhetianchanka_full2_desc', icon: '🚀', path: 'https://zettian.github.io/zen/', type: 'free' }
                 ]
             }
         };
         
-        function openVersionModal(key, name) {
+        function openVersionModal(key) {
             const config = versionConfig[key];
             if (!config) return;
             
-            document.getElementById('modalTitle').textContent = config.title;
-            document.getElementById('modalSubtitle').textContent = config.subtitle;
+            document.getElementById('modalTitle').textContent = t(config.titleKey);
+            document.getElementById('modalSubtitle').textContent = t(config.subtitleKey);
             
             const list = document.getElementById('versionList');
             list.innerHTML = config.versions.map((v, i) => `
                 <div class="version-item ${v.type} ${i === 0 ? 'recommended' : ''}" onclick="navigateTo('${v.path}')">
                     <div class="version-icon">${v.icon}</div>
                     <div class="version-info">
-                        <div class="version-name">${v.name}</div>
-                        <div class="version-desc">${v.desc}</div>
+                        <div class="version-name">${t(v.nameKey)}</div>
+                        <div class="version-desc">${t(v.descKey)}</div>
                     </div>
                     <span class="version-arrow">→</span>
                 </div>
@@ -1149,7 +1382,7 @@
                 navItems[0].classList.add('active');
             } else if (tab === 'record' || tab === 'profile') {
                 navItems[tab === 'record' ? 1 : 2].classList.add('active');
-                showToast('此功能即将上线');
+                showToast(t('comingSoon'));
             }
         }
         
@@ -1187,28 +1420,26 @@
         
         // ============ 初始化 ============
         document.addEventListener('DOMContentLoaded', function() {
+            applyLanguage();
             initDailyFortune();
             createParticles();
         });
     </script>
     <!-- 开源信息 | Open Source Info -->
     <div style="text-align:center;padding:20px 15px;margin-top:10px;border-top:1px solid rgba(212,168,83,0.2);">
-        <div style="font-size:14px;color:#d4a853;font-weight:bold;margin-bottom:8px;letter-spacing:1px;">⚡ 开源产品矩阵 | Open Source Suite</div>
-        <div style="font-size:12px;color:#999;line-height:1.8;margin-bottom:8px;">
-            所有产品以 BSL 1.1 许可证开源发布，非商业用途免费使用<br>
-            All products released under BSL 1.1 License, free for non-commercial use
+        <div style="font-size:14px;color:#d4a853;font-weight:bold;margin-bottom:8px;letter-spacing:1px;" data-i18n="osMatrixTitle">⚡ 开源产品矩阵 | Open Source Suite</div>
+        <div style="font-size:12px;color:#999;line-height:1.8;margin-bottom:8px;" data-i18n="osLicenseNote">所有产品以 BSL 1.1 许可证开源发布，非商业用途免费使用<br>All products released under BSL 1.1 License, free for non-commercial use</div>
+        <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+            <a href="https://zetian.i-ching-ai.com" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#d4a853,#e8c67a);color:#0d1f2d;border:none;padding:8px 20px;border-radius:16px;font-size:13px;font-weight:bold;text-decoration:none;" data-i18n="osFullVersion">✨ 完整版 → 官网</a>
         </div>
         <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-            <a href="https://zetian.i-ching-ai.com" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#d4a853,#e8c67a);color:#0d1f2d;border:none;padding:8px 20px;border-radius:16px;font-size:13px;font-weight:bold;text-decoration:none;">✨ 完整版 → 官网</a>
+            <a href="https://github.com/zettian/bazi" target="_blank" style="display:inline-block;border:1px solid rgba(212,168,83,0.5);color:#d4a853;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;" data-i18n="osBazi">⭐ 八字排盘</a>
+            <a href="https://github.com/zettian/yi" target="_blank" style="display:inline-block;border:1px solid rgba(106,27,162,0.5);color:#6a1b9a;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;" data-i18n="osYi">⭐ 易数占卜</a>
+            <a href="https://github.com/zettian/zen" target="_blank" style="display:inline-block;border:1px solid rgba(201,168,108,0.5);color:#c9a86c;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;" data-i18n="osZen">⭐ 禅卡占卜</a>
+            <a href="https://github.com/zettian/fengshui" target="_blank" style="display:inline-block;border:1px solid rgba(0,128,128,0.5);color:#008080;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;" data-i18n="osFengshui">⭐ 风水罗盘</a>
         </div>
-        <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
-            <a href="https://github.com/zettian/bazi" target="_blank" style="display:inline-block;border:1px solid rgba(212,168,83,0.5);color:#d4a853;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 八字排盘</a>
-            <a href="https://github.com/zettian/yi" target="_blank" style="display:inline-block;border:1px solid rgba(106,27,162,0.5);color:#6a1b9a;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 易数占卜</a>
-            <a href="https://github.com/zettian/zen" target="_blank" style="display:inline-block;border:1px solid rgba(201,168,108,0.5);color:#c9a86c;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 禅卡占卜</a>
-            <a href="https://github.com/zettian/fengshui" target="_blank" style="display:inline-block;border:1px solid rgba(0,128,128,0.5);color:#008080;padding:6px 16px;border-radius:16px;font-size:12px;text-decoration:none;">⭐ 风水罗盘</a>
-        </div>
-        <div style="font-size:12px;color:#b8923d;margin-bottom:4px;">📱 微信小程序搜「易学轻松玩」</div>
-        <div style="font-size:11px;color:#666;margin-top:4px;">⭐ Star us on GitHub | 开源引擎由择天老师开发 | Engine by Master Zeyue</div>
+        <div style="font-size:12px;color:#b8923d;margin-bottom:4px;" data-i18n="osWechat">📱 微信小程序搜「易学轻松玩」</div>
+        <div style="font-size:11px;color:#666;margin-top:4px;" data-i18n="osFooter">⭐ Star us on GitHub | 开源引擎由择天老师开发 | Engine by Master Zeyue</div>
     </div>
 
 </body>
